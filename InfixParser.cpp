@@ -20,3 +20,14 @@ void InfixParser::evaluateOffTop() {
         opQ->pop();
     numQ->push(Evaluator::evaluate(exp));
 }
+
+int InfixParser::getPrecedence(char op)
+{
+	for (int i = 0; i < 18; i++) {
+		if (operators[i] == op)
+			return precedence[i];
+
+	}
+
+	//TODO: Raise Error
+}
