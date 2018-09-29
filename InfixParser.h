@@ -5,7 +5,8 @@
 #ifndef INFIXPARSER_INFIXPARSER_H
 #define INFIXPARSER_INFIXPARSER_H
 
-#include <queue>
+#include <queue> //queue or stack?
+#include <cmath>
 #include "Evaluator.h"
 
 using namespace std;
@@ -16,6 +17,7 @@ private:
     queue<char> *opQ = new queue<char>();
 public:
     void evaluateOffTop();
+	int binaryevaluator(); //before adding the next operator to the stack, we will run this to perform the last operator and update 
 };
 
 
