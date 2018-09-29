@@ -92,12 +92,12 @@ int InfixParser::binaryevaluator()
 		opstack.pop();
 		return result;
 	}
+}
 	int InfixParser::getPrecedence(char op)
 	{
 		for (int i = 0; i < 18; i++) {
 			if (operators[i] == op)
 				return precedence[i];
-
 		}
 
 		//TODO: Raise Error

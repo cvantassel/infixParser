@@ -6,6 +6,13 @@
 
 int main() {
 
+	/*
+	a way to remove all spaces from string
+
+	s.erase(remove_if(s.begin(), s.end(), isspace), s.end());
+
+	will completely modify string
+	*/
 
     /* As far as the arithmetic evaluation goes, essentially all that really needs to be done is we need to:
      * 1. parse expression
