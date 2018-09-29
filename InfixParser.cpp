@@ -26,16 +26,16 @@ int InfixParser::binaryevaluator()
 	int oper1;
 	int oper2;
 	int result
-	if (opstack.top() == '-') {
-		oper2 = num.top();
-		val.pop();
-		oper1 = num.top();
-		val.pop();
-		result = oper1 - oper2;
-		val.push(result);
-		opstack.pop();
-		return result;
-	}
+		if (opstack.top() == '-') {
+			oper2 = num.top();
+			val.pop();
+			oper1 = num.top();
+			val.pop();
+			result = oper1 - oper2;
+			val.push(result);
+			opstack.pop();
+			return result;
+		}
 
 	if (opstack.top() == '*') {
 		oper2 = num.top();
@@ -92,5 +92,13 @@ int InfixParser::binaryevaluator()
 		opstack.pop();
 		return result;
 	}
-	
-}
+	int InfixParser::getPrecedence(char op)
+	{
+		for (int i = 0; i < 18; i++) {
+			if (operators[i] == op)
+				return precedence[i];
+
+		}
+
+		//TODO: Raise Error
+	}
