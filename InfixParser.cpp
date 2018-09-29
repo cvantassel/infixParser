@@ -97,7 +97,7 @@
 //	}
 //}
 
-int InfixParser::getNum(string expression, int numStart)
+int InfixParser::getNumLength(string expression, int numStart)
 {
 	//Pass in string expression and position of the first digit in the number
 
@@ -109,10 +109,64 @@ int InfixParser::getNum(string expression, int numStart)
 		int length = 0;
 		for (int i = numStart; isdigit(expression[i]); i++)
 			length++;
-		string numStr = expression.substr(numStart, length);
-		return stoi(numStr);
+		return length;
 	}
 
+}
+
+int InfixParser::getNum(string expression, int numStart, int numLength)
+{
+	string numStr = expression.substr(numStart, numLength);
+	return stoi(numStr);
+}
+
+int InfixParser::parse(string expression)
+{
+	//This is where the magic happens
+	//PreCondition: Pass string with no whitepaces (or invalid characters if possible)
+	//PostCondtion: Result
+
+	int pos = 0;
+
+	while (pos < expression.size) {
+
+
+		if (isdigit(expression[pos])) {
+			//Gets the rest of the digit and increments position accordingly
+			int digitLength = getNumLength(expression, pos);
+			int operand = getNum(expression, pos, digitLength);
+			pos += digitLength;
+
+			//Push to operand stack
+			opStack->push(operand);
+		}
+
+		//Check for increment and decrement
+		//TODO: push it to the stack accounting for precedence
+		if ((&expression[pos] == "+") || (&expression[pos] == "-"))
+		{
+			if (isIncrementOrDecrement(expression, pos)) {
+				string op = expression.substr(pos, 2);
+				pos += 2;
+			}
+			else {
+				string op = string(&expression[pos]);
+				pos++;
+			}
+		}
+	}
+
+	//TODO: Clear stacks at the end to allow for repeated use
+}
+
+bool InfixParser::isIncrementOrDecrement(string expression, int startPos)
+{
+	//Checks for ++ and --
+
+	if (expression[startPos] == expression[startPos++])
+		return true;
+	else
+		return false;
 }
 
 int InfixParser::getPrecedence(string op)
