@@ -2,7 +2,12 @@
 // Created by Caleb on 9/27/18.
 //
 
-#include "InfixParser.h"
+//#include "InfixParser.h"
+//#include "Evaluator.h"
+
+#include <iostream>
+
+using namespace std;
 
 int main() {
 
@@ -30,6 +35,8 @@ int main() {
      * That's about as far as I got.
      * Caleb
      */
+
+	cout << "Hello";
 
     return 0;
 }
