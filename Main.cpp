@@ -2,10 +2,11 @@
 // Created by Caleb on 9/27/18.
 //
 
-//#include "InfixParser.h"
+#include "InfixParser.h"
 //#include "Evaluator.h"
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -37,7 +38,14 @@ int main() {
      */
 
 
-	cout << "Hello";
+	////Testing
+	//string exptest = "55+6+77";
+	//string optest = "+";
+	//InfixParser parser;
+	//cout << parser.getPrecedence(optest) << endl;
+	//cout << parser.getNum(exptest, 0) << endl;
 
+	
+	system("pause");
     return 0;
 }

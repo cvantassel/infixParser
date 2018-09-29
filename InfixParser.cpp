@@ -7,96 +7,117 @@
 
 #include "InfixParser.h"
 
-void InfixParser::evaluateOffTop() {
-    // Function used when you are ready to evaluate the top two
-    // numbers in the NUM stack by the top operand in the OP stack
+//void InfixParser::evaluateOffTop() {
+//    // Function used when you are ready to evaluate the top two
+//    // numbers in the NUM stack by the top operand in the OP stack
+//
+//    // Create string with expression from stacks
+//    string exp;
+//    exp += std::to_string(numQ->front()) + opQ->front();
+//    // Remove used numbers
+//    numQ->pop();
+//    opQ->pop();
+//    exp += std::to_string(numQ->front());
+//    // Evaluate and put back in stack
+//    if (opQ->front() == '(')
+//        opQ->pop();
+//    numQ->push(Evaluator::evaluate(exp));
+//}
 
-    // Create string with expression from stacks
-    string exp;
-    exp += std::to_string(numQ->front()) + opQ->front();
-    // Remove used numbers
-    numQ->pop();
-    opQ->pop();
-    exp += std::to_string(numQ->front());
-    // Evaluate and put back in stack
-    if (opQ->front() == '(')
-        opQ->pop();
-    numQ->push(Evaluator::evaluate(exp));
-}
+//int InfixParser::binaryevaluator()
+//{
+//	int oper1;
+//	int oper2;
+//	int result;
+//	if (opstack.top() == '-') {
+//			oper2 = num.top();
+//			val.pop();
+//			oper1 = num.top();
+//			val.pop();
+//			result = oper1 - oper2;
+//			val.push(result);
+//			opstack.pop();
+//			return result;
+//		}
+//
+//	if (opstack.top() == '*') {
+//		oper2 = num.top();
+//		val.pop();
+//		oper1 = num.top();
+//		val.pop();
+//		result = oper1 * oper2;
+//		val.push(result);
+//		opstack.pop();
+//		return result;
+//	}
+//
+//	if (opstack.top() == '/') {
+//		oper2 = num.top();
+//		val.pop();
+//		oper1 = num.top();
+//		val.pop();
+//		if (oper2 == 0) {
+//			cout << "You cannot divide by 0!";
+//		}
+//		else {
+//			result = oper1 / oper2;
+//		}
+//		opstack.pop();
+//		return result;
+//	}
+//	if (opstack.top() == '+') {
+//		oper2 = num.top();
+//		val.pop();
+//		oper1 = num.top();
+//		val.pop();
+//		result = oper1 + oper2;
+//		val.push(result);
+//		opstack.pop();
+//		return result;
+//	}
+//	if (opstack.top() == '%') {
+//		oper2 = num.top();
+//		val.pop();
+//		oper1 = num.top();
+//		val.pop();
+//		result = oper1 % oper2;
+//		val.push(result);
+//		opstack.pop();
+//		return result;
+//	}
+//	if (opstack.top() == '^') {
+//		oper2 = num.top();
+//		val.pop();
+//		oper1 = num.top();
+//		val.pop();
+//		result = pow(oper1, oper2);
+//		val.push(result);
+//		opstack.pop();
+//		return result;
+//	}
+//}
 
-int InfixParser::binaryevaluator()
+int InfixParser::getNum(string expression, int numStart)
 {
-	int oper1;
-	int oper2;
-	int result
-		if (opstack.top() == '-') {
-			oper2 = num.top();
-			val.pop();
-			oper1 = num.top();
-			val.pop();
-			result = oper1 - oper2;
-			val.push(result);
-			opstack.pop();
-			return result;
-		}
+	//Pass in string expression and position of the first digit in the number
 
-	if (opstack.top() == '*') {
-		oper2 = num.top();
-		val.pop();
-		oper1 = num.top();
-		val.pop();
-		result = oper1 * oper2;
-		val.push(result);
-		opstack.pop();
-		return result;
+	if (!isdigit(expression[numStart]))
+		cout << "Precondition violated" << endl;
+		//TODO: Raise Error
+
+	else {
+		int length = 0;
+		for (int i = numStart; isdigit(expression[i]); i++)
+			length++;
+		string numStr = expression.substr(numStart, length);
+		return stoi(numStr);
 	}
 
-	if (opstack.top() == '/') {
-		oper2 = num.top();
-		val.pop();
-		oper1 = num.top();
-		val.pop();
-		if (oper2 == 0) {
-			cout << "You cannot divide by 0!";
-		}
-		else {
-			result = oper1 / oper2;
-		}
-		opstack.pop();
-		return result;
-	}
-	if (opstack.top() == '+') {
-		oper2 = num.top();
-		val.pop();
-		oper1 = num.top();
-		val.pop();
-		result = oper1 + oper2;
-		val.push(result);
-		opstack.pop();
-		return result;
-	}
-	if (opstack.top() == '%') {
-		oper2 = num.top();
-		val.pop();
-		oper1 = num.top();
-		val.pop();
-		result = oper1 % oper2;
-		val.push(result);
-		opstack.pop();
-		return result;
-	}
-	if (opstack.top() == '^') {
-		oper2 = num.top();
-		val.pop();
-		oper1 = num.top();
-		val.pop();
-		result = pow(oper1, oper2);
-		val.push(result);
-		opstack.pop();
-		return result;
-	}
 }
-	int InfixParser::getPrecedence(char op)
+
+int InfixParser::getPrecedence(string op)
+
+	//pass in operator (doesn't account for parenthesis)
 	{
 		for (int i = 0; i < 18; i++) {
 			if (operators[i] == op)

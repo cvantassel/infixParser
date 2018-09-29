@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{C22C4B33-05E0-4175-8EB0-51BC9EB214DD}</ProjectGuid>
-    <RootNamespace>InfixParser</RootNamespace>
+    <ProjectGuid>{4884AA91-4F03-4F30-8F57-DA17CABF6939}</ProjectGuid>
+    <RootNamespace>InfixParserSol</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
