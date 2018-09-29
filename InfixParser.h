@@ -26,6 +26,7 @@ private:
 	string operators [18] = { "||", "&&", "==", "!=", ">", ">=", "<", "<=", "+", "-", "*", "/", "%", "^", "-", "--", "++", "!" };
 	int precedence [18] = { 1,2,3,3,4,4,4,4,5,5,6,6,6,7,8,8,8,8 };
 	int numOps = 18;
+	string couldBeTwo = "|&!=><+-";
 
 public:
     //void evaluateOffTop();
@@ -36,6 +37,8 @@ public:
 	int getNum(string expression, int numStart, int numLength); //Converts and returns substring of digits
 	int parse(string expression); //Main function
 	bool isIncrementOrDecrement(string expression, int startPos); //Checks if next char in string denotes increment or decrement
+	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
+	bool isLogical(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 
 };
 

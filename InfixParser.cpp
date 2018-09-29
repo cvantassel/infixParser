@@ -128,7 +128,7 @@ int InfixParser::parse(string expression)
 
 	int pos = 0;
 
-	while (pos < expression.size) {
+	while (pos < expression.length()) {
 
 
 		if (isdigit(expression[pos])) {
@@ -141,11 +141,11 @@ int InfixParser::parse(string expression)
 			opStack->push(operand);
 		}
 
-		//Check for increment and decrement
+		//Check for double two character operators and adjust position accordingly
 		//TODO: push it to the stack accounting for precedence
-		if ((&expression[pos] == "+") || (&expression[pos] == "-"))
-		{
-			if (isIncrementOrDecrement(expression, pos)) {
+		if (couldBeTwo.find(expression[pos]) != std::string::npos) {
+
+			if (isIncrementOrDecrement(expression, pos) || isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
 				string op = expression.substr(pos, 2);
 				pos += 2;
 			}
@@ -153,7 +153,9 @@ int InfixParser::parse(string expression)
 				string op = string(&expression[pos]);
 				pos++;
 			}
+
 		}
+
 	}
 
 	//TODO: Clear stacks at the end to allow for repeated use
@@ -169,11 +171,26 @@ bool InfixParser::isIncrementOrDecrement(string expression, int startPos)
 		return false;
 }
 
-int InfixParser::getPrecedence(string op)
+bool InfixParser::isComparisonWithTwoChar(string expression, int startPos)
+{
+	//Pass if char at startPos is !,=,<,> and see if next is =
+	if (&expression[startPos++] == "=")
+		return true;
+	else
+		return false;
+}
 
-	//pass in operator (doesn't account for parenthesis)
-	{
-		for (int i = 0; i < 18; i++) {
+bool InfixParser::isLogical(string expression, int startPos)
+{
+	if (expression[startPos] == expression[startPos++])
+		return true;
+	else
+		return false;
+}
+
+int InfixParser::getPrecedence(string op){
+	//pass in operator (doesn't account for parenthesis)	
+	for (int i = 0; i < 18; i++) {
 			if (operators[i] == op)
 				return precedence[i];
 		}
