@@ -128,6 +128,18 @@ int InfixParser::parse(string expression)
 
 	while (pos < expression.length()) {
 
+		//Handle Parenthesis with Recursion
+		//Will be easier to test when .parse() is functional
+		//TODO: Handle mismatched parenthesis
+		//TODO: Hanlde empty parenthesis
+		if (openParenthesis.find(expression[pos]) != std::string::npos)
+		{
+			string closing = closeParenthesis[openParenthesis.find(expression[pos])];
+			int subLength = (expression.find(closing, pos + 1) - pos);
+			string subExpression = expression.substr(pos + 1, subLength - 1); //Doesn't include outermost parenthesis
+			opStack->push(parse(subExpression));
+		}
+
 
 		if (isdigit(expression[pos])) {
 			//Gets the rest of the digit and increments position accordingly

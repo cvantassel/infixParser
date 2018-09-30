@@ -27,6 +27,8 @@ private:
 	int precedence [18] = { 1,2,3,3,4,4,4,4,5,5,6,6,6,7,8,8,8,8 };
 	int numOps = 18;
 	string couldBeTwo = "|&!=><+-";
+	string openParenthesis = "([{";
+	string closeParenthesis = ")]}";
 
 public:
     //void evaluateOffTop();
