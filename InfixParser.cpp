@@ -3,9 +3,8 @@
 //
 
 
-
-
 #include "InfixParser.h"
+
 
 //void InfixParser::evaluateOffTop() {
 //    // Function used when you are ready to evaluate the top two
@@ -24,78 +23,78 @@
 //    numQ->push(Evaluator::evaluate(exp));
 //}
 
-//int InfixParser::binaryevaluator()
-//{
-//	int oper1;
-//	int oper2;
-//	int result;
-//	if (opstack.top() == '-') {
-//			oper2 = num.top();
-//			val.pop();
-//			oper1 = num.top();
-//			val.pop();
-//			result = oper1 - oper2;
-//			val.push(result);
-//			opstack.pop();
-//			return result;
-//		}
-//
-//	if (opstack.top() == '*') {
-//		oper2 = num.top();
-//		val.pop();
-//		oper1 = num.top();
-//		val.pop();
-//		result = oper1 * oper2;
-//		val.push(result);
-//		opstack.pop();
-//		return result;
-//	}
-//
-//	if (opstack.top() == '/') {
-//		oper2 = num.top();
-//		val.pop();
-//		oper1 = num.top();
-//		val.pop();
-//		if (oper2 == 0) {
-//			cout << "You cannot divide by 0!";
-//		}
-//		else {
-//			result = oper1 / oper2;
-//		}
-//		opstack.pop();
-//		return result;
-//	}
-//	if (opstack.top() == '+') {
-//		oper2 = num.top();
-//		val.pop();
-//		oper1 = num.top();
-//		val.pop();
-//		result = oper1 + oper2;
-//		val.push(result);
-//		opstack.pop();
-//		return result;
-//	}
-//	if (opstack.top() == '%') {
-//		oper2 = num.top();
-//		val.pop();
-//		oper1 = num.top();
-//		val.pop();
-//		result = oper1 % oper2;
-//		val.push(result);
-//		opstack.pop();
-//		return result;
-//	}
-//	if (opstack.top() == '^') {
-//		oper2 = num.top();
-//		val.pop();
-//		oper1 = num.top();
-//		val.pop();
-//		result = pow(oper1, oper2);
-//		val.push(result);
-//		opstack.pop();
-//		return result;
-//	}
-//}
+int InfixParser::binaryevaluator()
+{
+	int oper1;
+	int oper2;
+	int result;
+	if (opStack.top() == '-') {
+			oper2 = numStack.top();
+			numStack.pop();
+			oper1 = numStack.top();
+			numStack.pop();
+			result = oper1 - oper2;
+			numStack.push(result);
+			opStack.pop();
+			return result;
+	}
+
+	if (opStack.top() == '*') {
+		oper2 = numStack.top();
+		numStack.pop();
+		oper1 = num.top();
+		numStack.pop();
+		result = oper1 * oper2;
+		numStack.push(result);
+		opStack.pop();
+		return result;
+	}
+
+	if (opStack.top() == '/') {
+		oper2 = numStack.top();
+		val.pop();
+		oper1 = numStack.top();
+		numStack.pop();
+		if (oper2 == 0) {
+			cout << "You cannot divide by 0!";
+		}
+		else {
+			result = oper1 / oper2;
+		}
+		opStack.pop();
+		return result;
+	}
+	if (opStack.top() == '+') {
+		oper2 = numStack.top();
+		numStack.pop();
+		oper1 = numStack.top();
+		numStack.pop();
+		result = oper1 + oper2;
+		val.push(result);
+		opStack.pop();
+		return result;
+	}
+	if (opStack.top() == '%') {
+		oper2 = numStack.top();
+		numStack.pop();
+		oper1 = numStack.top();
+		numStack.pop();
+		result = oper1 % oper2;
+		numStack.push(result);
+		opStack.pop();
+		return result;
+	}
+	if (opStack.top() == '^') {
+		oper2 = numStack.top();
+		numStack.pop();
+		oper1 = numStack.top();
+		numStack.pop();
+		result = pow(oper1, oper2);
+		numStack.push(result);
+		opStack.pop();
+		return result;
+	}
+}
 
 int InfixParser::getNumLength(string expression, int numStart)
 {
@@ -111,7 +110,6 @@ int InfixParser::getNumLength(string expression, int numStart)
 			length++;
 		return length;
 	}
-
 }
 
 int InfixParser::getNum(string expression, int numStart, int numLength)
@@ -188,6 +186,22 @@ bool InfixParser::isLogical(string expression, int startPos)
 		return false;
 }
 
+bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring)
+{
+	int j = 0;
+	for (int i = 0; i < sizestring; i++)
+	{
+		for (j = 0; j < sizecheck; j++)
+		{
+			if (stringarray[i] == checkarray[j])
+				break;
+		}
+		if (j == sizecheck)
+			return false;
+	}
+	return true;
+}
+
 int InfixParser::getPrecedence(string op){
 	//pass in operator (doesn't account for parenthesis)	
 	for (int i = 0; i < 18; i++) {
@@ -197,3 +211,4 @@ int InfixParser::getPrecedence(string op){
 
 		//TODO: Raise Error
 	}
+

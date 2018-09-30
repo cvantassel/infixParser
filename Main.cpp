@@ -7,18 +7,24 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
 int main() {
 
-	/*
-	a way to remove all spaces from string
+		string str;
+		getline(cin, str);
+		str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+		int stringsize = str.length();
+		char stringarray[1024];
+		strcpy_s(stringarray, str.c_str());
 
-	s.erase(remove_if(s.begin(), s.end(), isspace), s.end());
 
-	will completely modify string
-	*/
+		char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|' };
+		int arrsize = size(check);
+		bool isvalid = checkvalidity(check, stringarray, arrsize, stringsize); 
+		cout << isvalid; //will output 1 if all characters are valid and 0 if invalid character is used
 
     /* As far as the arithmetic evaluation goes, essentially all that really needs to be done is we need to:
      * 1. parse expression

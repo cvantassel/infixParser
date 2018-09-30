@@ -32,14 +32,14 @@ public:
     //void evaluateOffTop();
 
 	int getPrecedence(string op); //Returns precedence based on arrays found in private variables (doesn't handle parentheses)
-	int binaryevaluator(); //before adding the next operator to the stack, we will run this to perform the last operator and update
+	int binaryevaluator(); //may need parameters but should be fine with only stacks
 	int getNumLength(string expression, int numStart); //Returns the length of the digit
 	int getNum(string expression, int numStart, int numLength); //Converts and returns substring of digits
 	int parse(string expression); //Main function
 	bool isIncrementOrDecrement(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
 	bool isLogical(string expression, int startPos); //Checks if next char in string denotes increment or decrement
-
+	bool checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring);
 };
 
 
