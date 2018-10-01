@@ -8,23 +8,63 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+//#include <bits/valarray_before.h>
 
 using namespace std;
 
 int main() {
 
-		string str;
-		getline(cin, str);
-		str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
-		int stringsize = str.length();
-		char stringarray[1024];
-		strcpy_s(stringarray, str.c_str());
+	string str;
+	// Read String
+	getline(cin, str);
+
+	// What does this do? -Caleb
+	//str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+
+	// Move string to array
+//	int stringsize = str.length();
+//	char stringarray[1024];
+//	strcpy_s(stringarray, str.c_str());
+//
+//	// Ensure all characters are valid
+//	char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')' };
+//	int arrsize = check.length();
+//	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);
+//	cout << isValid; //will output 1 if all characters are valid and 0 if invalid character is used'
+
+	/*
+	 * I've taken some liberties as far as how we will handle boolean expressions and arithmetic expressions, as I
+	 * wasn't able to find anything about it in the README.
+	 *
+	 * Essentially, I've made it so that there's two more stacks in the InfixParser class, for evaluating comparisons.
+	 * I originally planned on making two instances of InfixParser, but that breaks with parenthesis.
+	 * So now, whenever there's a comparison operator found, it will push the result
+	 * of the LHS of the comparison to the new stack, then the comparison operator, then clear the original stack and go
+	 * on to evaluate the RHS.
+	*/
+
+	bool isValid = true;
+	if (isValid) {
+
+		// Check that it starts with a valid character
+		if (str[0] == '>' || str[0] == '<' || str[0] == '|' || str[0] == '&' || str[0] == '=' || str[0] == '*'
+			|| str[0] == '/' || str[0] == '%' || str[0] == '^')
+			throw ("Invalid string");
+
+		// Send it through the parser
+		InfixParser* parser = new InfixParser();
+
+		int result = parser->parse(str);
+
+		cout << "The result is " << result << endl;
 
 
-		char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|' };
-		int arrsize = size(check);
-		bool isvalid = checkvalidity(check, stringarray, arrsize, stringsize); 
-		cout << isvalid; //will output 1 if all characters are valid and 0 if invalid character is used
+	}
+
+
+	// if you come to a boolean comparison, evaluate everything in stack before moving on
+
+
 
     /* As far as the arithmetic evaluation goes, essentially all that really needs to be done is we need to:
      * 1. parse expression
