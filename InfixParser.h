@@ -45,7 +45,8 @@ public:
 	bool isIncrementOrDecrement(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
 	bool isLogical(string expression, int startPos); //Checks if next char in string denotes increment or decrement
-	bool checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring);
+	bool checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring); //checks input string for valid characters
+	bool matchedparenthesis(string expression); //Checks input string to make sure parenthesis are matched
 };
 
 

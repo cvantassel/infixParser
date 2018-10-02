@@ -3,6 +3,7 @@
 //
 
 #include "InfixParser.h"
+#include "InfixParser.cpp"
 //#include "Evaluator.h"
 
 #include <iostream>
@@ -19,19 +20,23 @@ int main() {
 	getline(cin, str);
 
 	// What does this do? -Caleb
-	//str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+	//This reads through the string, first deletes all spaces, then it goes through and makes sure that only numbers and valid symbols are input-Kole
+	str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
 
 	// Move string to array
-//	int stringsize = str.length();
-//	char stringarray[1024];
-//	strcpy_s(stringarray, str.c_str());
-//
-//	// Ensure all characters are valid
-//	char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')' };
-//	int arrsize = check.length();
-//	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);
-//	cout << isValid; //will output 1 if all characters are valid and 0 if invalid character is used'
+	int stringsize = str.length();
+	char stringarray[1024];
+	strcpy_s(stringarray, str.c_str());
 
+	// Ensure all characters are valid
+	char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')' };
+	int arrsize = size(check);
+	InfixParser* v = new InfixParser();
+	InfixParser* p = new InfixParser();
+	bool isValid = v->checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
+	bool parenthesisValid = p->matchedparenthesis(str); //checks to make sure parenthesis are matched
+
+	cout << isValid;
 	/*
 	 * I've taken some liberties as far as how we will handle boolean expressions and arithmetic expressions, as I
 	 * wasn't able to find anything about it in the README.
@@ -43,8 +48,10 @@ int main() {
 	 * on to evaluate the RHS.
 	*/
 
-	bool isValid = true;
+	/*
 	if (isValid) {
+
+		cout << "yeet";
 
 		// Check that it starts with a valid character
 		if (str[0] == '>' || str[0] == '<' || str[0] == '|' || str[0] == '&' || str[0] == '=' || str[0] == '*'
@@ -57,10 +64,8 @@ int main() {
 		int result = parser->parse(str);
 
 		cout << "The result is " << result << endl;
-
-
 	}
-
+	*/
 
 	// if you come to a boolean comparison, evaluate everything in stack before moving on
 

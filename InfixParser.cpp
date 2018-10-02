@@ -405,6 +405,43 @@ bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizec
 	return true;
 }
 
+bool InfixParser::matchedparenthesis(string expression)
+{
+	string openpar = "([{";
+	string closepar = ")]}";
+	stack<char> par;
+	for (int i = 0; i < expression.length(); i++) {
+		if (openpar.find(expression[i])) {
+			par.push(expression[i]);
+			continue;
+		}
+
+		if (closepar.find(expression[i]) && par.empty())
+			return false;
+
+		switch (expression[i]) {
+		case ')':
+			if (par.top() == '{' || par.top() == '[')
+				return false;
+			par.pop();
+			break;
+
+		case '}':
+			if (par.top() == '(' || par.top() == '[')
+				return false;
+			par.pop();
+			break;
+
+		case ']':
+			if (par.top() == '(' || par.top() == '{')
+				return false;
+			par.pop();
+			break;
+		}
+		return (par.empty());
+	}
+}
+
 int InfixParser::getPrecedence(string op){
 	//pass in operator (doesn't account for parenthesis)	
 	for (int i = 0; i < 18; i++) {
