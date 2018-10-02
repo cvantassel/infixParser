@@ -220,7 +220,6 @@ int InfixParser::getNumLength(string expression, int numStart)
 int InfixParser::getNum(string expression, int numStart, int numLength)
 {
 	string numStr = expression.substr(numStart, numLength);
-	cout << numStr;
 	return stoi(numStr);
 }
 
@@ -319,10 +318,17 @@ int InfixParser::parse(string expression)
 		string computations = "+-*/%^";
 		if (computations.find(expression[pos]) != std::string::npos ) {
 			if (!opStack->empty()) {
-				int curOpPrecedence = operators->find(expression[pos]);
-				int topOpPrecedence = operators->find(opStack->top());
-				if (precedence[curOpPrecedence] < precedence[topOpPrecedence]) {  // Compare precedence
+				string opstack = opStack->top();
+				string expression1 = string(1, expression[pos]);
+				int curOpPrecedence = operators->find(expression1);
+				int topOpPrecedence = operators->find(opstack);
+
+				int op = getPrecedence(opstack);
+				int exp = getPrecedence(expression1);
+				//if (precedence[curOpPrecedence] < precedence[topOpPrecedence]) {  // Compare precedence
+				if (getPrecedence(expression1) < getPrecedence(opstack)) {  // Compare precedence
 					binaryevaluator();
+					opStack->push(expression1);
 				} else {
 					string s(1, expression[pos]); // Convert to string
 					opStack->push(s);
