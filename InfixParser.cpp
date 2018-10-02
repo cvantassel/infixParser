@@ -407,6 +407,7 @@ bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizec
 
 bool InfixParser::matchedparenthesis(string expression)
 {
+	//based off of the formula from https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/
 	string openpar = "([{";
 	string closepar = ")]}";
 	stack<char> par;
