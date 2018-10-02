@@ -3,7 +3,6 @@
 //
 
 #include "InfixParser.h"
-#include "InfixParser.cpp"
 //#include "Evaluator.h"
 
 #include <iostream>
@@ -35,8 +34,9 @@ int main() {
 	InfixParser* p = new InfixParser();
 	bool isValid = v->checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
 	bool parenthesisValid = p->matchedparenthesis(str); //checks to make sure parenthesis are matched
-
 	cout << isValid;
+
+	v->parse(str);
 	/*
 	 * I've taken some liberties as far as how we will handle boolean expressions and arithmetic expressions, as I
 	 * wasn't able to find anything about it in the README.

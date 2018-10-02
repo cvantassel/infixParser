@@ -383,7 +383,7 @@ bool InfixParser::isComparisonWithTwoChar(string expression, int startPos)
 
 bool InfixParser::isLogical(string expression, int startPos)
 {
-	if (expression[startPos] == expression[++startPos])
+	if (expression[startPos] == expression[startPos+1])
 		return true;
 	else
 		return false;
