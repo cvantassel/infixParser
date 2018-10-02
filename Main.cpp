@@ -36,7 +36,9 @@ int main() {
 	bool parenthesisValid = p->matchedparenthesis(str); //checks to make sure parenthesis are matched
 	cout << isValid;
 
-	v->parse(str);
+	int result = v->parse(str);
+	cout << result << endl;
+
 	/*
 	 * I've taken some liberties as far as how we will handle boolean expressions and arithmetic expressions, as I
 	 * wasn't able to find anything about it in the README.

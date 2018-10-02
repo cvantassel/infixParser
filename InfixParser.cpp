@@ -237,20 +237,20 @@ int InfixParser::parse(string expression)
 		//Handle Parenthesis with Recursion
 		//Will be easier to test when .parse() is functional
 		//TODO: Handle mismatched parenthesis | we should do this upon reading the expression.
-		int openLocation = static_cast<int>(openParenthesis.find(expression[pos]));
-		if (openLocation != std::string::npos) {
+		int openType = static_cast<int>(openParenthesis.find(expression[pos]));
+		if (openType != std::string::npos) {
 			// Evaluate the contents of the parenthesis
-			int closing = static_cast<int>(expression.find(closeParenthesis, openLocation)); // Location of ending parenthesis
+			int closingLocation = static_cast<int>(expression.find(closeParenthesis[openType], pos)); // Location of ending parenthesis
 			//unsigned long subLength = expression.find(closing);
-			if (pos + 2 < closing) {
+			if (pos + 2 < closingLocation) {
 				// You must have at least two characters between parenthesis to make an evaluation
-				string subExpression = expression.substr(pos + 1, closing - 1); //Doesn't include outermost parenthesis
+				string subExpression = expression.substr(pos + 1, closingLocation - 1); //Doesn't include outermost parenthesis
 				numStack->push(parse(subExpression));
 			} else {
 				cout << "Not enough characters in parenthesis.";
 			}
 
-			pos = closing; // Increment position to skip past parenthesis
+			pos = closingLocation; // Increment position to skip past parenthesis
 		}
 
 		// Handle digit
@@ -266,7 +266,7 @@ int InfixParser::parse(string expression)
 
 		// Handle comparison and 'crement
 		//TODO: push it to the stack accounting for precedence
-		if (couldBeTwo.find(expression[pos]) != std::string::npos) {
+		else if (couldBeTwo.find(expression[pos]) != std::string::npos) {
 
 			if (isIncrementOrDecrement(expression, pos)) {
 				numStack->push(1);
@@ -308,11 +308,11 @@ int InfixParser::parse(string expression)
 			}
 
 		}
-		else {
+			else {
 			// not sure the point of this... -Caleb
 			string op = string(&expression[pos]);
 			pos++;
-		}
+			}
 
 
 		// Handle operator
