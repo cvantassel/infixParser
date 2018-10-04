@@ -1,6 +1,9 @@
 # infixParser
 
 
+TODO:
+multi parantheses
+
 This parses infix expressions.
 
 RULE OF THUMB

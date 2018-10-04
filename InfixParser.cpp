@@ -23,181 +23,12 @@
 //    numQ->push(Evaluator::evaluate(exp));
 //}
 
-
-int InfixParser::binaryevaluator()
-{
-	int oper1;
-	int oper2;
-	int result;
-	if (opStack->top() == "-") {
-		oper2 = numStack->top();
-		numStack->pop();
-		oper1 = numStack->top();
-		numStack->pop();
-		result = oper1 - oper2;
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-
-	if (opStack->top() == "*") {
-		oper2 = numStack->top();
-		numStack->pop();
-		oper1 = numStack->top();
-		numStack->pop();
-		result = oper1 * oper2;
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-
-	if (opStack->top() == "/") {
-		oper2 = numStack->top();
-		numStack->pop();
-		oper1 = numStack->top();
-		numStack->pop();
-		if (oper2 == 0) {
-			cout << "You cannot divide by 0!";
-		}
-		else {
-			result = oper1 / oper2;
-		}
-		opStack->pop();
-		return result;
-	}
-	if (opStack->top() == "+") {
-		oper2 = numStack->top();
-		numStack->pop();
-		oper1 = numStack->top();
-		numStack->pop();
-		result = oper1 + oper2;
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-	if (opStack->top() == "%") {
-		oper2 = numStack->top();
-		numStack->pop();
-		oper1 = numStack->top();
-		numStack->pop();
-		result = oper1 % oper2;
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-	if (opStack->top() == "^") {
-		oper2 = numStack->top();
-		numStack->pop();
-		oper1 = numStack->top();
-		numStack->pop();
-		result = pow(oper1, oper2);
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-	if (opStack->top() == "++") {
-		oper1 = numStack->top();
-		numStack->pop();
-		result = oper1++;
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-	if (opStack->top() == "--") {
-		oper1 = numStack->top();
-		numStack->pop();
-		result = oper1--;
-		numStack->push(result);
-		opStack->pop();
-		return result;
-	}
-}
-
 int InfixParser::comparisonEvaluator() {
 	int oper1;
 	int oper2;
 	int result;
 
-	if (compOpStack->top() == "<=") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 <= oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == "<") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 < oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == ">=") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 >= oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == ">") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 > oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == "!=") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 != oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == "==") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 == oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == "&&") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 == oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
-	if (compOpStack->top() == "||") {
-		oper2 = compNumStack->top();
-		compNumStack->pop();
-		oper1 = compNumStack->top();
-		compNumStack->pop();
-		result = (oper1 == oper2);
-		compNumStack->push(result);
-		compOpStack->pop();
-		return result;
-	}
+
 };
 
 int InfixParser::getNumLength(string expression, int numStart)
@@ -228,6 +59,9 @@ int InfixParser::parse(string expression)
 	//This is where the magic happens
 	//PreCondition: Pass string with no whitepaces (or invalid characters if possible)
 	//PostCondtion: Result
+
+	Evaluator* evaluator = new Evaluator();
+
 
 	int pos = 0;
 
@@ -276,27 +110,25 @@ int InfixParser::parse(string expression)
 				}
 				pos += 2;
 			} else if(isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
-				cout << "yanny" << isComparisonWithTwoChar(expression, pos) << endl;
-				cout << "laurel" << isLogical(expression, pos) << endl;
 				string op = expression.substr(pos, 2);
 
 				// Evaluate everything on the LHS of the operator
 				while (!opStack->empty()){
-					binaryevaluator();
+					evaluator->evaluate(numStack, opStack);
 				}
 
 				// Populate compStacks
-				compNumStack->push(numStack->top());
+				numStack->push(numStack->top());
 				numStack->pop();
 
 
-				if (!compOpStack->empty()) {
+				if (!opStack->empty()) {
 					int curOpPrecedence = operators->find(expression[pos]);
-					int topOpPrecedence = operators->find(compOpStack->top());
+					int topOpPrecedence = operators->find(opStack->top());
 					if (precedence[curOpPrecedence] < precedence[topOpPrecedence]) {  // Compare precedence
 						comparisonEvaluator();
 					} else {
-						compOpStack->push(op);
+						opStack->push(op);
 					}
 				}
 
@@ -327,7 +159,7 @@ int InfixParser::parse(string expression)
 				int exp = getPrecedence(expression1);
 				//if (precedence[curOpPrecedence] < precedence[topOpPrecedence]) {  // Compare precedence
 				if (getPrecedence(expression1) < getPrecedence(opstack)) {  // Compare precedence
-					binaryevaluator();
+					evaluator->evaluate(numStack, opStack);
 					opStack->push(expression1);
 				} else {
 					string s(1, expression[pos]); // Convert to string
@@ -345,21 +177,19 @@ int InfixParser::parse(string expression)
 	// After string is fully parsed...
 	// Evaluate everything in the arithmetic stack
 	while (!opStack->empty()){
-		binaryevaluator();
+		evaluator->evaluate(numStack, opStack);
 	}
 	// If the comparison stack was populated..
-	if (!compOpStack->empty()) {
+	if (!opStack->empty()) {
 		// Push what's left from the arithmetic stack
-		compNumStack->push(numStack->top());
+		numStack->push(numStack->top());
 		// Evaluate everything in the comparison stack
-		while (!compOpStack->empty()){
+		while (!opStack->empty()){
 			comparisonEvaluator();
 		}
-		return compNumStack->top();
+		return numStack->top();
 	}
 	return numStack->top();
-
-	//TODO: Clear stacks at the end to allow for repeated use
 }
 
 bool InfixParser::isIncrementOrDecrement(string expression, int startPos)

@@ -18,23 +18,22 @@ int main() {
 	// Read String
 	getline(cin, str);
 
-	// What does this do? -Caleb
 	//This reads through the string, first deletes all spaces, then it goes through and makes sure that only numbers and valid symbols are input-Kole
-	str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
+//	str.erase(remove_if(str.begin(), str.end(), isspace), str.end());
 
 	// Move string to array
-	int stringsize = str.length();
-	char stringarray[1024];
-	strcpy_s(stringarray, str.c_str());
+//	int stringsize = str.length();
+//	char stringarray[1024];
+//	strcpy_s(stringarray, str.c_str());
 
 	// Ensure all characters are valid
-	char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')' };
-	int arrsize = size(check);
+//	char check[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')' };
+//	int arrsize = size(check);
 	InfixParser* v = new InfixParser();
-	InfixParser* p = new InfixParser();
-	bool isValid = v->checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
-	bool parenthesisValid = p->matchedparenthesis(str); //checks to make sure parenthesis are matched
-	cout << isValid;
+//	InfixParser* p = new InfixParser();
+//	bool isValid = v->checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
+//	bool parenthesisValid = p->matchedparenthesis(str); //checks to make sure parenthesis are matched
+//	cout << isValid;
 
 	int result = v->parse(str);
 	cout << result << endl;
