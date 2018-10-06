@@ -52,14 +52,14 @@ int Evaluator::evaluate(std::stack<int>* numStack, std::stack<std::string>* opSt
     if (opStack->top() == "++") {
         int oper1 = numStack->top();
         numStack->pop();
-        result = oper1++;
+        result = oper1+ 1;
         numStack->push(result);
         opStack->pop();
         return result;
     } else if (opStack->top() == "--") {
         int oper1 = numStack->top();
         numStack->pop();
-        int result = oper1--;
+        int result = oper1-1;
         numStack->push(result);
         opStack->pop();
         return result;
@@ -85,6 +85,8 @@ int Evaluator::evaluate(std::stack<int>* numStack, std::stack<std::string>* opSt
         if (opStack->top() == "-") result = oper1 - oper2;
         if (opStack->top() == "*") result = oper1 * oper2;
         if (opStack->top() == "+") result = oper1 + oper2;
+
+		//thinking we need to split these up somehow since they aren't working - Kole
         if (opStack->top() == "%") result = oper1 % oper2;
         if (opStack->top() == "^") result = pow(oper1, oper2);
         if (opStack->top() == "<=") result = (oper1 <= oper2);

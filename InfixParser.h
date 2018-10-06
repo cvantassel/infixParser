@@ -29,8 +29,9 @@ private:
 	// Pretty sure the recursive function handles this -Caleb
 	string operators [20] = { "(", "||", "&&", "==", "!=", ">", ">=", "<", "<=", "+", "-", "*", "/", "%", "^", "-", "--", "++", "!", ")"};
 	int precedence [20] = { 0,1,2,3,3,4,4,4,4,5,5,6,6,6,7,8,8,8,8,9 };
-	char comparisonOps [18] = { };
-	int numOps = 18;
+	//pretty sure these should be 20 now, not 18
+	char comparisonOps [20] = { };
+	int numOps = 20;
 	string couldBeTwo = "|&!=><+-";
 	string openParenthesis = "([{";
 	string closeParenthesis = ")]}";
