@@ -6,29 +6,12 @@
 #include "InfixParser.h"
 
 
-//void InfixParser::evaluateOffTop() {
-//    // Function used when you are ready to evaluate the top two
-//    // numbers in the NUM stack by the top operand in the OP stack
-//
-//    // Create string with expression from stacks
-//    string exp;
-//    exp += std::to_string(numQ->front()) + opQ->front();
-//    // Remove used numbers
-//    numQ->pop();
-//    opQ->pop();
-//    exp += std::to_string(numQ->front());
-//    // Evaluate and put back in stack
-//    if (opQ->front() == '(')
-//        opQ->pop();
-//    numQ->push(Evaluator::evaluate(exp));
-//}
-
 int InfixParser::comparisonEvaluator() {
 	int oper1;
 	int oper2;
 	int result;
 
-
+	return 0; //Not sure where your going with this but I needed to add a return statement to allow the main to run -Landon
 };
 
 int InfixParser::getNumLength(string expression, int numStart)
@@ -61,14 +44,16 @@ int InfixParser::parse(string expression)
 	//PostCondtion: Result
 
 	Evaluator* evaluator = new Evaluator();
-
+	bool parsable = makeParsable(expression);
+	if (!parsable)
+		return -1;
 
 	int pos = 0;
 
 	while (pos < expression.length()) {
 
-		//Handle Parenthesis with Recursion
-		//Will be easier to test when .parse() is functional
+		/*
+		//Recursive Parenthetical Handling
 		//TODO: Handle mismatched parenthesis | we should do this upon reading the expression.
 		int openType = static_cast<int>(openParenthesis.find(expression[pos]));
 		if (openType != std::string::npos) {
@@ -85,6 +70,7 @@ int InfixParser::parse(string expression)
 
 			pos = closingLocation; // Increment position to skip past parenthesis
 		}
+		*/
 
 		// Handle digit
 		if (isdigit(expression[pos])) {
@@ -109,7 +95,10 @@ int InfixParser::parse(string expression)
 					opStack->push("--");
 				}
 				pos += 2;
-			} else if(isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
+			} 
+
+			else if(isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
+				
 				string op = expression.substr(pos, 2);
 
 				// Evaluate everything on the LHS of the operator
@@ -277,6 +266,27 @@ bool InfixParser::matchedparenthesis(string expression)
 		}
 		return (par.empty());
 	}
+}
+
+bool InfixParser::makeParsable(string &expression)
+{
+
+	//Remove Spaces
+	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
+
+	//Move String to Array
+	int stringsize = expression.length();
+	char stringarray[1024];
+	strcpy_s(stringarray, expression.c_str());
+
+	//Check Validity
+	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
+	bool parenthesisValid = matchedparenthesis(expression); //checks to make sure parenthesis are matched
+
+	if (isValid && parenthesisValid)
+		return true;
+	else
+		return false; //TODO ERROR MESSAGES
 }
 
 int InfixParser::getPrecedence(string op){

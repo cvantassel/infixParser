@@ -24,12 +24,18 @@
     <ClCompile Include="..\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\infixTester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Evaluator.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\InfixParser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\infixTester.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

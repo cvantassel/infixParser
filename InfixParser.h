@@ -12,6 +12,7 @@
 #include <string>
 #include <iostream>
 #include "Evaluator.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -35,6 +36,9 @@ private:
 	string openParenthesis = "([{";
 	string closeParenthesis = ")]}";
 
+	char check[23] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')', '^' }; //added up-carrot-Landon
+	int arrsize = size(check);
+
 public:
     //void evaluateOffTop();
 	int getPrecedence(string op); //Returns precedence based on arrays found in private variables (doesn't handle parentheses)
@@ -45,8 +49,12 @@ public:
 	bool isIncrementOrDecrement(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
 	bool isLogical(string expression, int startPos); //Checks if next char in string denotes increment or decrement
+
 	bool checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring); //checks input string for valid characters
 	bool matchedparenthesis(string expression); //Checks input string to make sure parenthesis are matched
+	
+	bool makeParsable(string &expression); //Returns parseable or Error Message
+
 };
 
 
