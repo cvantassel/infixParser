@@ -18,7 +18,7 @@ int main() {
 	infixTester *tester = new infixTester;
 
 	tester->inputLoop(); //Run Parser Loop until asked to quit
-	tester->runProjectTests(); //Run non-error-generating expressions on the project sheet
+	//tester->runProjectTests(); //Run non-error-generating expressions on the project sheet
 
 
 	//This reads through the string, first deletes all spaces, then it goes through and makes sure that only numbers and valid symbols are input-Kole

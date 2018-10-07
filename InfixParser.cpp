@@ -39,41 +39,31 @@ int InfixParser::getNum(string expression, int numStart, int numLength)
 
 int InfixParser::parse(string expression)
 {
-	//This is where the magic happens
-	//PreCondition: Pass string with no whitepaces (or invalid characters if possible)
-	//PostCondtion: Result
 
 	Evaluator* evaluator = new Evaluator();
+
+	//Check Validity and erase whitespaces
 	bool parsable = makeParsable(expression);
 	if (!parsable)
 		return -1;
 
+	//Position in Expression
 	int pos = 0;
 
 	while (pos < expression.length()) {
 
-		/*
-		//Recursive Parenthetical Handling
-		//TODO: Handle mismatched parenthesis | we should do this upon reading the expression.
-		int openType = static_cast<int>(openParenthesis.find(expression[pos]));
-		if (openType != std::string::npos) {
-			// Evaluate the contents of the parenthesis
-			int closingLocation = static_cast<int>(expression.find(closeParenthesis[openType], pos)); // Location of ending parenthesis
-			//unsigned long subLength = expression.find(closing);
-			if (pos + 2 < closingLocation) {
-				// You must have at least two characters between parenthesis to make an evaluation
-				string subExpression = expression.substr(pos + 1, closingLocation - 1); //Doesn't include outermost parenthesis
-				numStack->push(parse(subExpression));
-			} else {
-				cout << "Not enough characters in parenthesis.";
-			}
+		//Two steps with each loop
+		//Step 1: Get new operand or operator
+		//Step 2: If operator then check precedence and either
+		//			a)If precedence greater push to stack
+		//			b)Else evaluate stack then push
+		//Finally: Evaluate rest of stack
 
-			pos = closingLocation; // Increment position to skip past parenthesis
-		}
-		*/
+		//Step 1: Get new operand or operator
 
-		// Handle digit
+		// Case: operand
 		if (isdigit(expression[pos])) {
+
 			//Gets the rest of the digit and increments position accordingly
 			int digitLength = getNumLength(expression, pos);
 			int operand = getNum(expression, pos, digitLength);
@@ -83,102 +73,95 @@ int InfixParser::parse(string expression)
 			numStack->push(operand);
 		}
 
-		// Handle comparison and 'crement
-		//TODO: push it to the stack accounting for precedence
-		else if (couldBeTwo.find(expression[pos]) != std::string::npos) {
+		//Case: operator
+		else {
 
-			if (isIncrementOrDecrement(expression, pos)) {
-				numStack->push(1);
-				if (expression[pos] == '+'){
-					opStack->push("++");
-				} else if (expression[pos] == '-') {
-					opStack->push("--");
-				}
-				pos += 2;
-			} 
+			//Op to be pushed
+			string newOp;
 
-			else if(isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
-				
-				string op = expression.substr(pos, 2);
+			//Case: possible two character operator
+			if (couldBeTwo.find(expression[pos]) != std::string::npos) {
 
-				// Evaluate everything on the LHS of the operator
-				while (!opStack->empty()){
-					evaluator->evaluate(numStack, opStack);
-				}
+				//Case: 'crement
+				if (isIncrementOrDecrement(expression, pos)) {
 
-				// Populate compStacks
-				numStack->push(numStack->top());
-				numStack->pop();
-
-
-				if (!opStack->empty()) {
-					int curOpPrecedence = operators->find(expression[pos]);
-					int topOpPrecedence = operators->find(opStack->top());
-					if (precedence[curOpPrecedence] < precedence[topOpPrecedence]) {  // Compare precedence
-						comparisonEvaluator();
-					} else {
-						opStack->push(op);
+					if (expression[pos] == '+') {
+						newOp = "++";
 					}
+					else if (expression[pos] == '-') {
+						newOp = "--";
+					}
+					pos += 2;
 				}
 
-				// Make sure there's nothing left over
-				if (!numStack->empty())
-					throw ("Invalid string, leftover number");
-				pos += 2;
+				//Case: some two character operator
+				else if (isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
+
+					newOp = expression.substr(pos, 2);
+					pos += 2;
+
+				}
+
+				//Case: Couldv'e been two character but wasn't
+				else {
+					newOp = expression[pos];
+					pos++;
+				}
+
 			}
 
-		}
+			//Case: Single character operator
 			else {
-			// not sure the point of this... -Caleb
-			string op = string(&expression[pos]);
-			pos++;
+				newOp = expression[pos];
+				pos++;
 			}
 
 
-		// Handle operator
-		string computations = "+-*/%^";
-		if (computations.find(expression[pos]) != std::string::npos ) {
-			if (!opStack->empty()) {
-				string opstack = opStack->top();
-				string expression1 = string(1, expression[pos]);
-				int curOpPrecedence = operators->find(expression1);
-				int topOpPrecedence = operators->find(opstack);
+			//Step 2: Check precedence => push or evaluate&push (Note: we're still inside the operator condition)
+			
+			
+			//Case: Operator Stack Empty
+			if (opStack->empty()) {
+				opStack->push(newOp);
+			}
 
-				int op = getPrecedence(opstack);
-				int exp = getPrecedence(expression1);
-				//if (precedence[curOpPrecedence] < precedence[topOpPrecedence]) {  // Compare precedence
-				if (getPrecedence(expression1) < getPrecedence(opstack)) {  // Compare precedence
-					evaluator->evaluate(numStack, opStack);
-					opStack->push(expression1);
-				} else {
-					string s(1, expression[pos]); // Convert to string
-					opStack->push(s);
+			//Case: operator stack not empty
+			else {
+
+				int curOpPrecedence = getPrecedence(newOp);
+				int topOpPrecedence = getPrecedence(opStack->top());
+
+				//Case: Precedence of new operator greater so just push to opStack
+				if (curOpPrecedence >= topOpPrecedence) { 
+					opStack->push(newOp);
 				}
-			} else {
-				string s(1, expression[pos]); // Convert to string
-				opStack->push(s);
+
+				//Case: Precedence of new operator less
+				else {
+
+					//Evaluate stack until new operator precedence is less than top operator or until stack empty
+					do {
+						evaluator->evaluate(numStack, opStack);
+
+					} while (!opStack->empty() && curOpPrecedence < getPrecedence(opStack->top()));
+						opStack->push(newOp);
+				}
+
 			}
-			pos++;
+
 		}
 
 	}
 
-	// After string is fully parsed...
-	// Evaluate everything in the arithmetic stack
+	//Finally: Evaluate rest of stack and return result
+
 	while (!opStack->empty()){
 		evaluator->evaluate(numStack, opStack);
 	}
-	// If the comparison stack was populated..
-	if (!opStack->empty()) {
-		// Push what's left from the arithmetic stack
-		numStack->push(numStack->top());
-		// Evaluate everything in the comparison stack
-		while (!opStack->empty()){
-			comparisonEvaluator();
-		}
-		return numStack->top();
-	}
-	return numStack->top();
+
+	int result = numStack->top();
+	numStack->pop();
+	return result;
 }
 
 bool InfixParser::isIncrementOrDecrement(string expression, int startPos)
@@ -291,11 +274,13 @@ bool InfixParser::makeParsable(string &expression)
 
 int InfixParser::getPrecedence(string op){
 	//pass in operator (doesn't account for parenthesis)	
-	for (int i = 0; i < 18; i++) {
+	int size = sizeof(operators) / sizeof(operators[0]);
+	for (int i = 0; i < size; i++) {
+
 			if (operators[i] == op)
 				return precedence[i];
-		}
 
-		//TODO: Raise Error
 	}
+
+}
 
