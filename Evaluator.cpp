@@ -1,8 +1,6 @@
 //
 // Created by Caleb on 9/27/18.
-//
 
-//Probably going to consolidate evaluation to parser class because it's not storing any information not in Parser already -Landon
 
 #include "Evaluator.h"
 #include <stack>
@@ -10,7 +8,7 @@
 #include <cmath>
 
 bool Evaluator::isOperand(char opr) {
-    return (opr == '+' || opr == '-' || opr == '*' || opr == '/');
+	return (opr == '+' || opr == '-' || opr == '*' || opr == '/');
 }
 
 //int Evaluator::evaluate(std::string exp) {
@@ -47,57 +45,60 @@ bool Evaluator::isOperand(char opr) {
 //}
 
 int Evaluator::evaluate(std::stack<int>* numStack, std::stack<std::string>* opStack) {
-    int result;
+	int result;
 
-    if (opStack->top() == "++") {
-        int oper1 = numStack->top();
-        numStack->pop();
-        result = oper1++;
-        numStack->push(result);
-        opStack->pop();
-        return result;
-    } else if (opStack->top() == "--") {
-        int oper1 = numStack->top();
-        numStack->pop();
-        int result = oper1--;
-        numStack->push(result);
-        opStack->pop();
-        return result;
-    } else if (opStack->top() == "/") {
-        int oper2 = numStack->top();
-        numStack->pop();
-        int oper1 = numStack->top();
-        numStack->pop();
-        if (oper2 == 0) {
-            throw "You cannot divide by 0!";
-        } else {
-            result = oper1 / oper2;
-        }
-        opStack->pop();
-        return result;
-    }
-    else {
-        int oper2 = numStack->top();
-        numStack->pop();
-        int oper1 = numStack->top();
-        numStack->pop();
+	if (opStack->top() == "++") {
+		int oper1 = numStack->top();
+		numStack->pop();
+		result = oper1 + 1;
+		numStack->push(result);
+		opStack->pop();
+		return result;
+	}
+	else if (opStack->top() == "--") {
+		int oper1 = numStack->top();
+		numStack->pop();
+		int result = oper1 - 1;
+		numStack->push(result);
+		opStack->pop();
+		return result;
+	}
+	else if (opStack->top() == "/") {
+		int oper2 = numStack->top();
+		numStack->pop();
+		int oper1 = numStack->top();
+		numStack->pop();
+		if (oper2 == 0) {
+			throw "You cannot divide by 0!";
+		}
+		else {
+			result = oper1 / oper2;
+		}
+		opStack->pop();
+		return result;
+	}
+	else {
+		int oper2 = numStack->top();
+		numStack->pop();
+		int oper1 = numStack->top();
+		numStack->pop();
 
-        if (opStack->top() == "-") result = oper1 - oper2;
-        if (opStack->top() == "*") result = oper1 * oper2;
-        if (opStack->top() == "+") result = oper1 + oper2;
-        if (opStack->top() == "%") result = oper1 % oper2;
-        if (opStack->top() == "^") result = pow(oper1, oper2);
-        if (opStack->top() == "<=") result = (oper1 <= oper2);
-        if (opStack->top() == "<") result = (oper1 < oper2);
-        if (opStack->top() == ">=") result = (oper1 >= oper2);
-        if (opStack->top() == ">") result = (oper1 > oper2);
-        if (opStack->top() == "!=") result = (oper1 != oper2);
-        if (opStack->top() == "==") result = (oper1 == oper2);
-        if (opStack->top() == "&&") result = (oper1 && oper2);
-        if (opStack->top() == "||") result = (oper1 || oper2);
+		if (opStack->top() == "-") result = oper1 - oper2;
+		if (opStack->top() == "*") result = oper1 * oper2;
+		if (opStack->top() == "+") result = oper1 + oper2;
+		if (opStack->top() == "%") result = oper1 % oper2;
+		if (opStack->top() == "^") result = pow(oper1, oper2);
+		if (opStack->top() == "<=") result = (oper1 <= oper2);
+		if (opStack->top() == "<") result = (oper1 < oper2);
+		if (opStack->top() == ">=") result = (oper1 >= oper2);
+		if (opStack->top() == ">") result = (oper1 > oper2);
+		if (opStack->top() == "!=") result = (oper1 != oper2);
+		if (opStack->top() == "==") result = (oper1 == oper2);
+		if (opStack->top() == "&&") result = (oper1 && oper2);
+		if (opStack->top() == "||") result = (oper1 || oper2);
 
-        numStack->push(result);
-        opStack->pop();
-        return result;
-    }
+		numStack->push(result);
+		opStack->pop();
+		return result;
+	}
 }
