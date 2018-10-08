@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef INFIXPARSER_INFIXTESTER_H
+#define INFIXPARSER_INFIXTESTER_H
 #include "InfixParser.h"
 
 #include <iostream>
@@ -15,3 +15,4 @@ public:
 	void runProjectTests(); //Runs expressions given on Project Sheet
 	void runErrorTests(); //Runs tests meant to generate Error Messages
 };
+#endif
