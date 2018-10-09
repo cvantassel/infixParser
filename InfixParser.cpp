@@ -18,17 +18,10 @@ int InfixParser::getNumLength(string expression, int numStart)
 {
 	//Pass in string expression and position of the first digit in the number
 
-	// This would never get executed because we check before we call the function -Caleb
-//	if (!isdigit(expression[numStart]))
-//		cout << "Precondition violated" << endl;
-//		//TODO: Raise Error
-
-//	else {
-		int length = 0;
-		for (int i = numStart; isdigit(expression[i]); i++)
-			length++;
-		return length;
-//	}
+	int length = 0;
+	for (int i = numStart; isdigit(expression[i]); i++)
+		length++;
+	return length;
 }
 
 int InfixParser::getNum(string expression, int numStart, int numLength)
@@ -82,36 +75,29 @@ int InfixParser::parse(string expression)
 			//Case: possible two character operator
 			if (couldBeTwo.find(expression[pos]) != std::string::npos) {
 
-				//Case: 'crement
-				if (isIncrementOrDecrement(expression, pos)) {
-
-					if (expression[pos] == '+') {
-						newOp = "++";
-					}
-					else if (expression[pos] == '-') {
-						newOp = "--";
-					}
-					pos += 2;
-				}
-
 				//Case: some two character operator
-				else if (isComparisonWithTwoChar(expression, pos) || isLogical(expression, pos)) {
+				if (isComparisonWithTwoChar(expression, pos) || isDoubleChar(expression, pos)) {
 
 					newOp = expression.substr(pos, 2);
 					pos += 2;
 
 				}
 
-				//Case: Couldv'e been two character but wasn't
+				//Case: Could've been two character but wasn't
 				else {
 					newOp = expression[pos];
 					pos++;
+
+					//handle negative
+					if (!isdigit(expression[pos-1]) && newOp == "-")
+						newOp += " ";
 				}
 
 			}
 
 			//Case: Single character operator
 			else {
+
 				newOp = expression[pos];
 				pos++;
 			}
@@ -131,8 +117,12 @@ int InfixParser::parse(string expression)
 				int curOpPrecedence = getPrecedence(newOp);
 				int topOpPrecedence = getPrecedence(opStack->top());
 
+				//temporary
+                std::string operator1 = opStack->top();
+
+
 				//Case: Precedence of new operator greater so just push to opStack
-				if (curOpPrecedence >= topOpPrecedence) { 
+				if (curOpPrecedence >= topOpPrecedence || curOpPrecedence == 0 || curOpPrecedence == 0) {
 					opStack->push(newOp);
 				}
 
@@ -141,6 +131,8 @@ int InfixParser::parse(string expression)
 
 					//Evaluate stack until new operator precedence is less than top operator or until stack empty
 					do {
+					    if (opStack->top() == ")")
+					        opStack->pop();
 						evaluator->evaluate(numStack, opStack);
 
 					} while (!opStack->empty() && curOpPrecedence < getPrecedence(opStack->top()));
@@ -150,13 +142,15 @@ int InfixParser::parse(string expression)
 			}
 
 		}
-
 	}
 
 	//Finally: Evaluate rest of stack and return result
 
 	while (!opStack->empty()){
-		evaluator->evaluate(numStack, opStack);
+        if (opStack->top() == "(" || opStack->top() == ")")
+            opStack->pop();
+        if (!opStack->empty())
+		    evaluator->evaluate(numStack, opStack);
 	}
 
 	int result = numStack->top();
@@ -164,37 +158,19 @@ int InfixParser::parse(string expression)
 	return result;
 }
 
-bool InfixParser::isIncrementOrDecrement(string expression, int startPos)
-{
-	//Checks for ++ and --
-
-	if (&expression[startPos] == "+" || &expression[startPos] == "-") {
-		if (expression[startPos] == expression[startPos++])
-			return true;
-		else
-			return false;
-	}
-	else {
-		return false;
-	}
-}
-
 bool InfixParser::isComparisonWithTwoChar(string expression, int startPos)
 {
 	//Pass if char at startPos is !,=,<,> and see if next is =
-	if (&expression[startPos++] == "=")
-		return true;
-	else
-		return false;
+	string nextChar = &expression[startPos];
+	return (nextChar.at(1) == '=');
 }
 
 
-bool InfixParser::isLogical(string expression, int startPos)
+bool InfixParser::isDoubleChar(string expression, int startPos)
 {
-	if (expression[startPos] == expression[startPos+1])
-		return true;
-	else
-		return false;
+    string nextChar = &expression[startPos];
+    char checkChar = nextChar.at(1);
+    return nextChar.at(0) == checkChar;
 }
 
 bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring)
@@ -253,11 +229,11 @@ bool InfixParser::matchedparenthesis(string expression)
 
 bool InfixParser::makeParsable(string &expression)
 {
-
-	//Remove Spaces
+//
+//	//Remove Spaces
 	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
-
-	//Move String to Array
+//
+//	//Move String to Array
 	int stringsize = expression.length();
 	char stringarray[1024];
 	strcpy_s(stringarray, expression.c_str());

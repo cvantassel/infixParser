@@ -37,7 +37,7 @@ private:
 	string closeParenthesis = ")]}";
 
 	char check[23] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')', '^' }; //added up-carrot-Landon
-	int arrsize = size(check);
+	int arrsize = 23;
 
 public:
     //void evaluateOffTop();
@@ -48,7 +48,7 @@ public:
 	int parse(string expression); //Main function
 	bool isIncrementOrDecrement(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
-	bool isLogical(string expression, int startPos); //Checks if next char in string denotes increment or decrement
+	bool isDoubleChar(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 
 	bool checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring); //checks input string for valid characters
 	bool matchedparenthesis(string expression); //Checks input string to make sure parenthesis are matched
