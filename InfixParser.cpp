@@ -89,7 +89,7 @@ int InfixParser::parse(string expression)
 					pos++;
 
 					//handle negative
-					if (!isdigit(expression[pos-1]) && newOp == "-")
+					if (!isdigit(expression[pos - 1]) && newOp == "-")
 						newOp += " ";
 				}
 
@@ -104,8 +104,8 @@ int InfixParser::parse(string expression)
 
 
 			//Step 2: Check precedence => push or evaluate&push (Note: we're still inside the operator condition)
-			
-			
+
+
 			//Case: Operator Stack Empty
 			if (opStack->empty()) {
 				opStack->push(newOp);
@@ -118,7 +118,7 @@ int InfixParser::parse(string expression)
 				int topOpPrecedence = getPrecedence(opStack->top());
 
 				//temporary
-                std::string operator1 = opStack->top();
+				std::string operator1 = opStack->top();
 
 
 				//Case: Precedence of new operator greater so just push to opStack
@@ -131,12 +131,12 @@ int InfixParser::parse(string expression)
 
 					//Evaluate stack until new operator precedence is less than top operator or until stack empty
 					do {
-					    if (opStack->top() == ")")
-					        opStack->pop();
+						if (opStack->top() == ")")
+							opStack->pop();
 						evaluator->evaluate(numStack, opStack);
 
 					} while (!opStack->empty() && curOpPrecedence < getPrecedence(opStack->top()));
-						opStack->push(newOp);
+					opStack->push(newOp);
 				}
 
 			}
@@ -146,11 +146,11 @@ int InfixParser::parse(string expression)
 
 	//Finally: Evaluate rest of stack and return result
 
-	while (!opStack->empty()){
-        if (opStack->top() == "(" || opStack->top() == ")")
-            opStack->pop();
-        if (!opStack->empty())
-		    evaluator->evaluate(numStack, opStack);
+	while (!opStack->empty()) {
+		if (opStack->top() == "(" || opStack->top() == ")")
+			opStack->pop();
+		if (!opStack->empty())
+			evaluator->evaluate(numStack, opStack);
 	}
 
 	int result = numStack->top();
@@ -168,9 +168,9 @@ bool InfixParser::isComparisonWithTwoChar(string expression, int startPos)
 
 bool InfixParser::isDoubleChar(string expression, int startPos)
 {
-    string nextChar = &expression[startPos];
-    char checkChar = nextChar.at(1);
-    return nextChar.at(0) == checkChar;
+	string nextChar = &expression[startPos];
+	char checkChar = nextChar.at(1);
+	return nextChar.at(0) == checkChar;
 }
 
 bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring)
@@ -192,54 +192,48 @@ bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizec
 bool InfixParser::matchedparenthesis(string expression)
 {
 	//based off of the formula from https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/
+	string openpar = "([{";
+	string closepar = ")]}";
 	stack<char> par;
-	char holder;
-
-	for (int i = 0; i<expression.length(); i++)
-	{
-		if (expression[i] == '[' || expression[i] == ')' || expression[i] == '{')
-		{
+	for (int i = 0; i < expression.length(); i++) {
+		if (openpar.find(expression[i])) {
 			par.push(expression[i]);
 			continue;
 		}
 
-		if (par.empty())
-			return false;
+		if (closepar.find(expression[i]) && par.empty())
+			return true;
 
-		switch (expression[i])
-		{
+		switch (expression[i]) {
 		case ')':
-			x = par.top();
+			if (par.top() == '{' || par.top() == '[')
+				return true;
 			par.pop();
-			if (holder == '{' || holder == '[')
-				return false;
 			break;
 
-		case '}': 
-			x = par.top();
+		case '}':
+			if (par.top() == '(' || par.top() == '[')
+				return true;
 			par.pop();
-			if (holder == '(' || holder == '[')
-				return false;
 			break;
 
 		case ']':
-			x = par.top();
+			if (par.top() == '(' || par.top() == '{')
+				return true;
 			par.pop();
-			if (holder == '(' || holder == '{')
-				return false;
 			break;
 		}
+		return (par.empty());
 	}
-	return (par.empty());
 }
 
 bool InfixParser::makeParsable(string &expression)
 {
-//
-//	//Remove Spaces
+	//
+	//	//Remove Spaces
 	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
-//
-//	//Move String to Array
+	//
+	//	//Move String to Array
 	int stringsize = expression.length();
 	char stringarray[1024];
 	strcpy_s(stringarray, expression.c_str());
@@ -254,15 +248,14 @@ bool InfixParser::makeParsable(string &expression)
 		return false; //TODO ERROR MESSAGES
 }
 
-int InfixParser::getPrecedence(string op){
+int InfixParser::getPrecedence(string op) {
 	//pass in operator (doesn't account for parenthesis)	
 	int size = sizeof(operators) / sizeof(operators[0]);
 	for (int i = 0; i < size; i++) {
 
-			if (operators[i] == op)
-				return precedence[i];
+		if (operators[i] == op)
+			return precedence[i];
 
 	}
 
 }
-

@@ -49,12 +49,9 @@ public:
 	int parse(string expression); //Main function
 	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
 	bool isDoubleChar(string expression, int startPos); //Checks if next char in string denotes increment or decrement
-
 	bool checkvalidity(char checkarray[], char stringarray[], int sizecheck, int sizestring); //checks input string for valid characters
 	bool matchedparenthesis(string expression); //Checks input string to make sure parenthesis are matched
-	
 	bool makeParsable(string &expression); //Returns parseable or Error Message
-
 };
 
 
