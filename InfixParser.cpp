@@ -192,39 +192,45 @@ bool InfixParser::checkvalidity(char checkarray[], char stringarray[], int sizec
 bool InfixParser::matchedparenthesis(string expression)
 {
 	//based off of the formula from https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/
-	string openpar = "([{";
-	string closepar = ")]}";
 	stack<char> par;
-	for (int i = 0; i < expression.length(); i++) {
-		if (openpar.find(expression[i])) {
+	char holder;
+
+	for (int i = 0; i<expression.length(); i++)
+	{
+		if (expression[i] == '[' || expression[i] == ')' || expression[i] == '{')
+		{
 			par.push(expression[i]);
 			continue;
 		}
 
-		if (closepar.find(expression[i]) && par.empty())
+		if (par.empty())
 			return false;
 
-		switch (expression[i]) {
+		switch (expression[i])
+		{
 		case ')':
-			if (par.top() == '{' || par.top() == '[')
-				return false;
+			x = par.top();
 			par.pop();
+			if (holder == '{' || holder == '[')
+				return false;
 			break;
 
-		case '}':
-			if (par.top() == '(' || par.top() == '[')
-				return false;
+		case '}': 
+			x = par.top();
 			par.pop();
+			if (holder == '(' || holder == '[')
+				return false;
 			break;
 
 		case ']':
-			if (par.top() == '(' || par.top() == '{')
-				return false;
+			x = par.top();
 			par.pop();
+			if (holder == '(' || holder == '{')
+				return false;
 			break;
 		}
-		return (par.empty());
 	}
+	return (par.empty());
 }
 
 bool InfixParser::makeParsable(string &expression)
