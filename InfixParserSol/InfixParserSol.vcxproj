@@ -117,11 +117,13 @@
   <ItemGroup>
     <ClCompile Include="..\Evaluator.cpp" />
     <ClCompile Include="..\InfixParser.cpp" />
+    <ClCompile Include="..\infixTester.cpp" />
     <ClCompile Include="..\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Evaluator.h" />
     <ClInclude Include="..\InfixParser.h" />
+    <ClInclude Include="..\infixTester.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
