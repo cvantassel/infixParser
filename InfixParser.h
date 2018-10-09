@@ -46,7 +46,6 @@ public:
 	int getNumLength(string expression, int numStart); //Returns the length of the digit
 	int getNum(string expression, int numStart, int numLength); //Converts and returns substring of digits
 	int parse(string expression); //Main function
-	bool isIncrementOrDecrement(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 	bool isComparisonWithTwoChar(string expression, int startPos); //Checks if next character is string denotes boolean operator
 	bool isDoubleChar(string expression, int startPos); //Checks if next char in string denotes increment or decrement
 
