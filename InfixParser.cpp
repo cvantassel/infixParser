@@ -131,9 +131,15 @@ int InfixParser::parse(string expression)
 
 					//Evaluate stack until new operator precedence is less than top operator or until stack empty
 					do {
-						if (opStack->top() == ")")
+						if (opStack->top() == ")") {
 							opStack->pop();
-						evaluator->evaluate(numStack, opStack);
+							while(opStack->top() != "(")
+								evaluator->evaluate(numStack, opStack);
+							opStack->pop();
+
+						}
+						else
+							evaluator->evaluate(numStack, opStack);
 
 					} while (!opStack->empty() && curOpPrecedence < getPrecedence(opStack->top()));
 					opStack->push(newOp);
@@ -146,10 +152,35 @@ int InfixParser::parse(string expression)
 
 	//Finally: Evaluate rest of stack and return result
 
-	while (!opStack->empty()) {
+	/*while (!opStack->empty()) {
 		if (opStack->top() == "(" || opStack->top() == ")")
 			opStack->pop();
 		if (!opStack->empty())
+			evaluator->evaluate(numStack, opStack);
+	}*/
+
+	while (!opStack->empty()) {
+
+		int closingCount = 0;
+		if (opStack->top() == ")") {
+			closingCount++;
+			opStack->pop();
+			while (opStack->top() != "(" || closingCount > 1) {
+				if (opStack->top() == ")"){
+					closingCount++;
+					opStack->pop();
+				}
+				else if (opStack->top() == "(") {
+					opStack->pop();
+					closingCount--;
+				}
+				else evaluator->evaluate(numStack, opStack);
+			}
+			opStack->pop();
+			closingCount--;
+		}
+
+		else
 			evaluator->evaluate(numStack, opStack);
 	}
 
