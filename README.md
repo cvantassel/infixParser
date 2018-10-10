@@ -61,6 +61,4 @@ In Evaluator Function:
 	Meaningful Error Messages
 	Comparison Operators
 
-Paper Stuff
-	Report
-	UML Diagram
+![uml](https://user-images.githubusercontent.com/33508520/46709265-7a645300-cc08-11e8-9960-e6ed4ae3b9b4.jpg)
