@@ -13,6 +13,7 @@
 #include <iostream>
 #include "Evaluator.h"
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -34,6 +35,11 @@ private:
 	char comparisonOps [20] = { };
 	int numOps = 20;
 	string couldBeTwo = "|&!=><+-";
+	string lastPush = "";
+    vector<string> noTwoBinaryOps = {"||", "&&","==", "!=", ">", ">=", "<", "<=","*", "/", "%", "^"};
+    vector<string> unaryOps = {"++", "--", "-", "+"};
+
+
 	string openParenthesis = "([{";
 	string closeParenthesis = ")]}";
 

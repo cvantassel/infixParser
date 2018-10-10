@@ -3,7 +3,6 @@
 //
 
 
-#include <vector>
 #include "InfixParser.h"
 
 
@@ -64,6 +63,7 @@ int InfixParser::parse(string expression)
 			pos += digitLength;
 
 			//Push to operand stack
+            lastPush = operand;
 			numStack->push(operand);
 		}
 
@@ -80,7 +80,7 @@ int InfixParser::parse(string expression)
 				if (isComparisonWithTwoChar(expression, pos) || isDoubleChar(expression, pos)) {
 
 					newOp = expression.substr(pos, 2);
-					pos += 2;
+                    pos += 2;
 
 				}
 
@@ -103,15 +103,14 @@ int InfixParser::parse(string expression)
 				pos++;
 			}
 
-			// Step 1.5: Check if it's illegal
-			// Two in a row
-			vector<string> noTwoBinaryOps = {"||", "&&","==", "!=", ">", ">=", "<", "<=","*", "/", "%", "^"};
-			vector<string> unaryOps = {"++", "--", "-", "+"};
-			if (find(noTwoBinaryOps.begin(), noTwoBinaryOps.end(), newOp) != noTwoBinaryOps.end()){
-				if (!opStack->empty())
-					if (find(noTwoBinaryOps.begin(), noTwoBinaryOps.end(), opStack->top()) != noTwoBinaryOps.end()) throw runtime_error("Two binary operators in a row @ char " + pos);
-					else if (find(unaryOps.begin(), unaryOps.end(), opStack->top()) != unaryOps.end()) throw runtime_error("A unary operand can't be followed by a binary operator @ char " + pos);
-			}
+            if (find(noTwoBinaryOps.begin(), noTwoBinaryOps.end(), newOp) != noTwoBinaryOps.end()) {
+                if (find(noTwoBinaryOps.begin(), noTwoBinaryOps.end(), lastPush) !=
+                    noTwoBinaryOps.end())
+                    throw runtime_error("Two binary operators in a row @ char " + (pos));
+                else if (find(unaryOps.begin(), unaryOps.end(), lastPush) != unaryOps.end())
+                    throw runtime_error("A unary operand can't be followed by a binary operator @ char " + pos);
+            }
+
 
 
 			//Step 2: Check precedence => push or evaluate&push (Note: we're still inside the operator condition)
@@ -119,6 +118,7 @@ int InfixParser::parse(string expression)
 
 			//Case: Operator Stack Empty
 			if (opStack->empty()) {
+                lastPush = newOp;
 				opStack->push(newOp);
 			}
 
@@ -134,6 +134,7 @@ int InfixParser::parse(string expression)
 
 				//Case: Precedence of new operator greater so just push to opStack
 				if (curOpPrecedence >= topOpPrecedence || curOpPrecedence == 0 || curOpPrecedence == 0) {
+				    lastPush = newOp;
 					opStack->push(newOp);
 				}
 
@@ -162,6 +163,7 @@ int InfixParser::parse(string expression)
                             }
                         }
 					} while (!opStack->empty() && curOpPrecedence < getPrecedence(opStack->top()));
+					lastPush = newOp;
 					opStack->push(newOp);
 				}
 
@@ -310,21 +312,21 @@ bool InfixParser::makeParsable(string &expression)
 
 
 		//Remove Spaces
-	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
-	//
-	//	//Move String to Array
-	int stringsize = expression.length();
-	char stringarray[1024];
-	strcpy_s(stringarray, expression.c_str());
-
-	//Check Validity
-	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
-	bool parenthesisValid = matchedparenthesis(expression); //checks to make sure parenthesis are matched
-
-	if (isValid && parenthesisValid)
+//	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
+//	//
+//	//	//Move String to Array
+//	int stringsize = expression.length();
+//	char stringarray[1024];
+//	strcpy_s(stringarray, expression.c_str());
+//
+//	//Check Validity
+//	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
+//	bool parenthesisValid = matchedparenthesis(expression); //checks to make sure parenthesis are matched
+//
+//	if (isValid && parenthesisValid)
 		return true;
-	else
-		return false; //TODO ERROR MESSAGES
+//	else
+//		return false; //TODO ERROR MESSAGES
 }
 
 int InfixParser::getPrecedence(string op) {

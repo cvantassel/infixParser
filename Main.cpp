@@ -15,9 +15,9 @@ using namespace std;
 
 int main() {
 
-	infixTester *tester = new infixTester;
-
-	tester->inputLoop(); //Run Parser Loop until asked to quit
+//	infixTester *tester = new infixTester;
+//
+//	tester->inputLoop(); //Run Parser Loop until asked to quit
 	//tester->runProjectTests(); //Run non-error-generating expressions on the project sheet
 
 
@@ -68,16 +68,16 @@ int main() {
 	*/
 
 	// if you come to a boolean comparison, evaluate everything in stack before moving on
-//    while (true) {
-//        string yanny;
-//        getline(cin, yanny);
-//        // Send it through the parser
-//        InfixParser *parser = new InfixParser();
-//
-//        int result = parser->parse(yanny);
-//
-//        cout << "The result is " << result << endl;
-//    }
+    while (true) {
+        string yanny;
+        getline(cin, yanny);
+        // Send it through the parser
+        InfixParser *parser = new InfixParser();
+
+        int result = parser->parse(yanny);
+
+        cout << "The result is " << result << endl;
+    }
 
     /* As far as the arithmetic evaluation goes, essentially all that really needs to be done is we need to:
      * 1. parse expression
