@@ -41,7 +41,6 @@ private:
 	int arrsize = 23;
 
 public:
-    //void evaluateOffTop();
 	int getPrecedence(string op); //Returns precedence based on arrays found in private variables (doesn't handle parentheses)
 	int comparisonEvaluator();
 	int getNumLength(string expression, int numStart); //Returns the length of the digit

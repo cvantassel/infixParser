@@ -3,6 +3,7 @@
 //
 
 
+#include <vector>
 #include "InfixParser.h"
 
 
@@ -102,6 +103,16 @@ int InfixParser::parse(string expression)
 				pos++;
 			}
 
+			// Step 1.5: Check if it's illegal
+			// Two in a row
+			vector<string> noTwoBinaryOps = {"||", "&&","==", "!=", ">", ">=", "<", "<=","*", "/", "%", "^"};
+			vector<string> unaryOps = {"++", "--", "-", "+"};
+			if (find(noTwoBinaryOps.begin(), noTwoBinaryOps.end(), newOp) != noTwoBinaryOps.end()){
+				if (!opStack->empty())
+					if (find(noTwoBinaryOps.begin(), noTwoBinaryOps.end(), opStack->top()) != noTwoBinaryOps.end()) throw runtime_error("Two binary operators in a row @ char " + pos);
+					else if (find(unaryOps.begin(), unaryOps.end(), opStack->top()) != unaryOps.end()) throw runtime_error("A unary operand can't be followed by a binary operator @ char " + pos);
+			}
+
 
 			//Step 2: Check precedence => push or evaluate&push (Note: we're still inside the operator condition)
 
@@ -133,14 +144,23 @@ int InfixParser::parse(string expression)
 					do {
 						if (opStack->top() == ")") {
 							opStack->pop();
-							while(opStack->top() != "(")
-								evaluator->evaluate(numStack, opStack);
+							while(opStack->top() != "(") {
+							    try {
+                                    evaluator->evaluate(numStack, opStack);
+							    } catch (exception &e) {
+							        cerr << e.what() << "@ char " << pos << endl;
+							    }
+							}
 							opStack->pop();
 
 						}
-						else
-							evaluator->evaluate(numStack, opStack);
-
+						else {
+                            try {
+                                evaluator->evaluate(numStack, opStack);
+                            } catch (exception &e) {
+								cerr << e.what() << "@ char " << pos << endl;
+                            }
+                        }
 					} while (!opStack->empty() && curOpPrecedence < getPrecedence(opStack->top()));
 					opStack->push(newOp);
 				}
@@ -174,14 +194,25 @@ int InfixParser::parse(string expression)
 					opStack->pop();
 					closingCount--;
 				}
-				else evaluator->evaluate(numStack, opStack);
+				else {
+                    try {
+                        evaluator->evaluate(numStack, opStack);
+                    } catch (exception &e) {
+						cerr << e.what() << "@ char " << pos << endl;
+                    }
+				}
 			}
 			opStack->pop();
 			closingCount--;
 		}
 
-		else
-			evaluator->evaluate(numStack, opStack);
+		else{
+            try {
+                evaluator->evaluate(numStack, opStack);
+            } catch (exception &e) {
+				cerr << e.what() << "@ char " << pos << endl;
+            }
+		}
 	}
 
 	int result = numStack->top();
@@ -260,8 +291,25 @@ bool InfixParser::matchedparenthesis(string expression)
 
 bool InfixParser::makeParsable(string &expression)
 {
-	//
-	//	//Remove Spaces
+
+	// Error checking
+	
+	// Start of string
+    char badStarts[10] = {'|', '&', '=', '>', '<', '^','*', '/', '%', ')'};
+	if (badStarts[9] == expression[0]) throw runtime_error("Expression can't start with a closing parentheses @ char 0");
+    for (int i = 0; i < 10; i++)
+    	if (badStarts[i] == expression[0]) throw runtime_error("Expression can't start with a binary operator @ char 0");
+
+	// Two operands check
+	for (int i = 0; i < expression.length()-2; i++) {
+		char temp = expression[i];
+		if (isdigit(expression[i]))
+			if (expression[i+1] == ' ')
+				if (isdigit(expression[i+2])) throw runtime_error("Two operands in a row @ char" + i);
+	}
+
+
+		//Remove Spaces
 	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
 	//
 	//	//Move String to Array

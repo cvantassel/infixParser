@@ -6,6 +6,7 @@
 #include <stack>
 #include <string>
 #include <cmath>
+#include <stdexcept>
 
 bool Evaluator::isOperand(char opr) {
 	return (opr == '+' || opr == '-' || opr == '*' || opr == '/');
@@ -51,11 +52,12 @@ int Evaluator::evaluate(std::stack<int>* numStack, std::stack<std::string>* opSt
 		int oper1 = numStack->top();
 		numStack->pop();
 		if (oper2 == 0) {
-			throw "You cannot divide by 0!";
+			throw std::runtime_error("You cannot divide by 0!");
 		}
 		else {
-			result = oper1 / oper2;
+			result = (oper1 / oper2);
 		}
+        numStack->push(result);
 		opStack->pop();
 		return result;
 	}
