@@ -1,18 +1,11 @@
 //
-// Created by Caleb on 9/27/18.
+// Created by Caleb, Kole, and Landon
 //
 
 
 #include "InfixParser.h"
 
 
-int InfixParser::comparisonEvaluator() {
-	int oper1;
-	int oper2;
-	int result;
-
-	return 0; //Not sure where your going with this but I needed to add a return statement to allow the main to run -Landon
-};
 
 int InfixParser::getNumLength(string expression, int numStart)
 {
@@ -174,15 +167,10 @@ int InfixParser::parse(string expression)
 
 	//Finally: Evaluate rest of stack and return result
 
-	/*while (!opStack->empty()) {
-		if (opStack->top() == "(" || opStack->top() == ")")
-			opStack->pop();
-		if (!opStack->empty())
-			evaluator->evaluate(numStack, opStack);
-	}*/
 
 	while (!opStack->empty()) {
 
+		//Handles Parentheses
 		int closingCount = 0;
 		if (opStack->top() == ")") {
 			closingCount++;
@@ -330,7 +318,9 @@ bool InfixParser::makeParsable(string &expression)
 }
 
 int InfixParser::getPrecedence(string op) {
-	//pass in operator (doesn't account for parenthesis)	
+	
+	//Pass in operator and get precedence based on arrays found in the class
+
 	int size = sizeof(operators) / sizeof(operators[0]);
 	for (int i = 0; i < size; i++) {
 

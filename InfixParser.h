@@ -1,5 +1,5 @@
 //
-// Created by Caleb on 9/27/18.
+// Created by Caleb, Kole, and Landon
 //
 
 #ifndef INFIXPARSER_INFIXPARSER_H
@@ -26,13 +26,8 @@ private:
 	stack<string> *opStack = new stack<string>();
 	stack<int> *compNumStack = new stack<int>();
 	stack<string> *compOpStack = new stack<string>();
-	string expression; //Assign expression to this if we want to construct the parser with the expression in it -Landon
-	//int parentheticalExpressionLayer = 0; //I think this will work to keep track of how many parthesese deep we are in an expression -Landon
-	// Pretty sure the recursive function handles this -Caleb
 	string operators [20] = { "(", "||", "&&", "==", "!=", ">", ">=", "<", "<=", "+", "-", "*", "/", "%", "^", "-", "--", "++", "!", ")"};
 	int precedence [20] = { 0,1,2,3,3,4,4,4,4,5,5,6,6,6,7,8,8,8,8,9 };
-	//pretty sure these should be 20 now, not 18
-	char comparisonOps [20] = { };
 	int numOps = 20;
 	string couldBeTwo = "|&!=><+-";
 	string lastPush = "";
@@ -43,12 +38,11 @@ private:
 	string openParenthesis = "([{";
 	string closeParenthesis = ")]}";
 
-	char check[23] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')', '^' }; //added up-carrot-Landon
+	char check[23] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '<', '>', '=', '-', '+', '*', '/', '&', '|', '(', ')', '^' };
 	int arrsize = 23;
 
 public:
 	int getPrecedence(string op); //Returns precedence based on arrays found in private variables (doesn't handle parentheses)
-	int comparisonEvaluator();
 	int getNumLength(string expression, int numStart); //Returns the length of the digit
 	int getNum(string expression, int numStart, int numLength); //Converts and returns substring of digits
 	int parse(string expression); //Main function
