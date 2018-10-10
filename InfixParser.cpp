@@ -312,21 +312,21 @@ bool InfixParser::makeParsable(string &expression)
 
 
 		//Remove Spaces
-//	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
-//	//
-//	//	//Move String to Array
-//	int stringsize = expression.length();
-//	char stringarray[1024];
-//	strcpy_s(stringarray, expression.c_str());
-//
-//	//Check Validity
-//	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
-//	bool parenthesisValid = matchedparenthesis(expression); //checks to make sure parenthesis are matched
-//
-//	if (isValid && parenthesisValid)
+	expression.erase(remove_if(expression.begin(), expression.end(), isspace), expression.end());
+	//
+	//	//Move String to Array
+	int stringsize = expression.length();
+	char stringarray[1024];
+	strcpy_s(stringarray, expression.c_str());
+
+	//Check Validity
+	bool isValid = checkvalidity(check, stringarray, arrsize, stringsize);//will output 1 if only valid characters are input
+	bool parenthesisValid = matchedparenthesis(expression); //checks to make sure parenthesis are matched
+
+	if (isValid && parenthesisValid)
 		return true;
-//	else
-//		return false; //TODO ERROR MESSAGES
+	else
+		return false; //TODO ERROR MESSAGES
 }
 
 int InfixParser::getPrecedence(string op) {
